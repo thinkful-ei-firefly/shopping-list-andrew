@@ -43,46 +43,61 @@ function renderShoppingList() {
 }
 
 
-function handleNewItemSubmit() {
-  //when Add item button is pushed
-    //preventDefault
-    //collect input
-    //input field should be pushed into STORE as an object with
-        //{id: cuid(), name: ${input}, checked: false}
-    //Call renderShoppingList again to re-render list
-  console.log('`handleNewItemSubmit` ran');
+function addItemToShoppingList(itemName) {
+  console.log(`Adding "${itemName}" to shopping list`);
+  STORE.push({id: cuid(), name: itemName, checked: false});
 }
-  }
-  
-  
-  function handleItemCheckClicked() {
-    //when a checkbox is selected, and if item wasn't checked before but is now
-        //Target item associated with the checkbox collected
-            //change STORE index of that item's object to
-            //.checked: true;
-    console.log('`handleItemCheckClicked` ran');
-  }
-  
-  
-  function handleDeleteItemClicked() {
-        //when a checkbox is selected, and if item was checked before but isn't now
-        //Target item associated with the checkbox collected
-            //change STORE index of that item's object to
-            //.checked: false;
-    console.log('`handleDeleteItemClicked` ran')
-  }
-  
-  // this function will be our callback when the page loads. it's responsible for
-  // initially rendering the shopping list, and activating our individual functions
-  // that handle new item submission and user clicks on the "check" and "delete" buttons
-  // for individual shopping list items.
-  function handleShoppingList() {
+
+function handleNewItemSubmit() {
+  $('#js-shopping-list-form').submit(function(event) {
+    event.preventDefault();
+    console.log('`handleNewItemSubmit` ran');
+    const newItemName = $('.js-shopping-list-entry').val();
+    $('.js-shopping-list-entry').val('');
+    addItemToShoppingList(newItemName);
     renderShoppingList();
-    handleNewItemSubmit();
-    handleItemCheckClicked();
-    handleDeleteItemClicked();
-  
-  }
-  
-  // when the page loads, call `handleShoppingList`
-  $(handleShoppingList);
+  });
+}
+
+function toggleCheckedForListItem(itemId) {
+  console.log("Toggling checked property for item with id " + itemId);
+  const item = STORE.find(item => item.id === itemId);
+  item.checked = !item.checked;
+}
+
+
+function getItemIdFromElement(item) {
+  return $(item)
+    .closest('li')
+    .data('item-id');
+}
+
+function handleItemCheckClicked() {
+  $('.js-shopping-list').on('click', `.js-item-toggle`, event => {
+    console.log('`handleItemCheckClicked` ran');
+    const id = getItemIdFromElement(event.currentTarget);
+    toggleCheckedForListItem(id);
+    renderShoppingList();
+  });
+}
+
+
+function handleDeleteItemClicked() {
+  // this function will be responsible for when users want to delete a shopping list
+  // item
+  console.log('`handleDeleteItemClicked` ran')
+}
+
+// this function will be our callback when the page loads. it's responsible for
+// initially rendering the shopping list, and activating our individual functions
+// that handle new item submission and user clicks on the "check" and "delete" buttons
+// for individual shopping list items.
+function handleShoppingList() {
+  renderShoppingList();
+  handleNewItemSubmit();
+  handleItemCheckClicked();
+  handleDeleteItemClicked();
+}
+
+// when the page loads, call `handleShoppingList`
+$(handleShoppingList);
