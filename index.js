@@ -44,20 +44,31 @@ function renderShoppingList() {
 
 
 function handleNewItemSubmit() {
-  // this function will be responsible for when users add a new shopping list item
+  //when Add item button is pushed
+    //preventDefault
+    //collect input
+    //input field should be pushed into STORE as an object with
+        //{id: cuid(), name: ${input}, checked: false}
+    //Call renderShoppingList again to re-render list
   console.log('`handleNewItemSubmit` ran');
 }
   }
   
   
   function handleItemCheckClicked() {
-    // this function will be responsible for when users click the "check" button on a shopping list item.
+    //when a checkbox is selected, and if item wasn't checked before but is now
+        //Target item associated with the checkbox collected
+            //change STORE index of that item's object to
+            //.checked: true;
     console.log('`handleItemCheckClicked` ran');
   }
   
   
   function handleDeleteItemClicked() {
-    // this function will be responsible for when users want to delete a shopping list item
+        //when a checkbox is selected, and if item was checked before but isn't now
+        //Target item associated with the checkbox collected
+            //change STORE index of that item's object to
+            //.checked: false;
     console.log('`handleDeleteItemClicked` ran')
   }
   
